@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard de Emendas - Camaquã</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #222;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .flex {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .flex > div {
+      flex: 1;
+      min-width: 200px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      cursor: pointer;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #eee;
+      text-align: left;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dashboard de Emendas Parlamentares – Camaquã</h1>
+
+  <div class="flex">
+    <div class="card">
+      <h2>Município</h2>
+      <p><strong>Camaquã</strong></p>
+    </div>
+    <div class="card">
+      <h2>Valor Total de Emendas</h2>
+      <p><strong>R$ 2.212.000,00</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Lista de Emendas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Valor Total (R$)</th>
+          <th>Setor</th>
+          <th>Ano</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-emendas">
+        <tr data-codigo="CAMA-001"><td>CAMA-001</td><td>30.000</td><td>Assistência Social</td><td>2023</td></tr>
+        <tr data-codigo="CAMA-002"><td>CAMA-002</td><td>350.000</td><td>Agricultura</td><td>2023</td></tr>
+        <tr data-codigo="CAMA-003"><td>CAMA-003</td><td>150.000</td><td>Saúde</td><td>2023</td></tr>
+        <tr data-codigo="CAMA-004"><td>CAMA-004</td><td>750.000</td><td>Educação e Saúde</td><td>2024</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Detalhes da Emenda Selecionada</h2>
+    <div id="detalhes">
+      <p>Selecione uma emenda na tabela acima para visualizar os detalhes aqui.</p>
+    </div>
+  </div>
+
+<script>
+const dadosDetalhes = {
+  'CAMA-001': [
+    { destino: 'APAE', valor: '30.000' }
+  ],
+  'CAMA-002': [
+    { destino: 'Associação dos Produtores de Konflanz na Santa Auta', valor: '—' },
+    { destino: 'ASSPROLEITE - Associação de Produtores de Leite de Camaquã', valor: '—' },
+    { destino: 'Coopertraf', valor: '—' }
+  ],
+  'CAMA-003': [
+    { destino: 'Hospital Nossa Senhora Aparecida', valor: '150.000' }
+  ],
+  'CAMA-004': [
+    { destino: 'Quadra da Escola Santo Antônio', valor: '600.000' },
+    { destino: 'MAC Hospital Nossa Senhora Aparecida', valor: '150.000' }
+  ]
+};
+
+const linhas = document.querySelectorAll('#tabela-emendas tr');
+const detalhesDiv = document.getElementById('detalhes');
+
+linhas.forEach(linha => {
+  linha.addEventListener('click', () => {
+    const codigo = linha.getAttribute('data-codigo');
+    const dados = dadosDetalhes[codigo];
+
+    if (dados) {
+      let html = `<table>
+        <thead>
+          <tr><th>Destino</th><th>Valor (R$)</th></tr>
+        </thead>
+        <tbody>`;
+
+      dados.forEach(item => {
+        html += `<tr><td>${item.destino}</td><td>${item.valor}</td></tr>`;
+      });
+
+      html += `</tbody></table>`;
+      detalhesDiv.innerHTML = html;
+    } else {
+      detalhesDiv.innerHTML = `<p>Não há detalhes cadastrados para essa emenda.</p>`;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
